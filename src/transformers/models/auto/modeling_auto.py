@@ -692,6 +692,7 @@ MODEL_FOR_CAUSAL_LM_MAPPING_NAMES = OrderedDict(
         ("starcoder2", "Starcoder2ForCausalLM"),
         ("transfo-xl", "TransfoXLLMHeadModel"),
         ("trocr", "TrOCRForCausalLM"),
+        ("voxtral", "VoxtralForConditionalGeneration"),
         ("whisper", "WhisperForCausalLM"),
         ("xglm", "XGLMForCausalLM"),
         ("xlm", "XLMWithLMHeadModel"),
@@ -982,6 +983,12 @@ MODEL_FOR_IMAGE_TEXT_TO_TEXT_MAPPING_NAMES = OrderedDict(
         ("udop", "UdopForConditionalGeneration"),
         ("vipllava", "VipLlavaForConditionalGeneration"),
         ("vision-encoder-decoder", "VisionEncoderDecoderModel"),
+    ]
+)
+
+MODEL_FOR_MULTIMODAL_TEXT_TO_TEXT_MAPPING_NAMES = OrderedDict(
+    [
+        ("voxtral", "VoxtralForConditionalGeneration"),
     ]
 )
 
@@ -1735,6 +1742,9 @@ MODEL_FOR_VISION_2_SEQ_MAPPING = _LazyAutoMapping(CONFIG_MAPPING_NAMES, MODEL_FO
 MODEL_FOR_IMAGE_TEXT_TO_TEXT_MAPPING = _LazyAutoMapping(
     CONFIG_MAPPING_NAMES, MODEL_FOR_IMAGE_TEXT_TO_TEXT_MAPPING_NAMES
 )
+MODEL_FOR_MULTIMODAL_TEXT_TO_TEXT_MAPPING = _LazyAutoMapping(
+    CONFIG_MAPPING_NAMES, MODEL_FOR_MULTIMODAL_TEXT_TO_TEXT_MAPPING_NAMES
+)
 MODEL_FOR_RETRIEVAL_MAPPING = _LazyAutoMapping(CONFIG_MAPPING_NAMES, MODEL_FOR_RETRIEVAL_MAPPING_NAMES)
 MODEL_FOR_VISUAL_QUESTION_ANSWERING_MAPPING = _LazyAutoMapping(
     CONFIG_MAPPING_NAMES, MODEL_FOR_VISUAL_QUESTION_ANSWERING_MAPPING_NAMES
@@ -2059,6 +2069,13 @@ class AutoModelForImageTextToText(_BaseAutoModelClass):
 AutoModelForImageTextToText = auto_class_update(AutoModelForImageTextToText, head_doc="image-text-to-text modeling")
 
 
+class AutoModelForMultimodalTextToText(_BaseAutoModelClass):
+    _model_mapping = MODEL_FOR_MULTIMODAL_TEXT_TO_TEXT_MAPPING
+
+
+AutoModelForMultimodalTextToText = auto_class_update(AutoModelForMultimodalTextToText, head_doc="multimodal-text-to-text modeling")
+
+
 class AutoModelForAudioClassification(_BaseAutoModelClass):
     _model_mapping = MODEL_FOR_AUDIO_CLASSIFICATION_MAPPING
 
@@ -2209,6 +2226,7 @@ __all__ = [
     "MODEL_FOR_VISION_2_SEQ_MAPPING",
     "MODEL_FOR_RETRIEVAL_MAPPING",
     "MODEL_FOR_IMAGE_TEXT_TO_TEXT_MAPPING",
+    "MODEL_FOR_MULTIMODAL_TEXT_TO_TEXT_MAPPING",
     "MODEL_FOR_VISUAL_QUESTION_ANSWERING_MAPPING",
     "MODEL_MAPPING",
     "MODEL_WITH_LM_HEAD_MAPPING",
@@ -2258,4 +2276,5 @@ __all__ = [
     "AutoModelForZeroShotImageClassification",
     "AutoModelForZeroShotObjectDetection",
     "AutoModelForImageTextToText",
+    "AutoModelForMultimodalTextToText",
 ]
