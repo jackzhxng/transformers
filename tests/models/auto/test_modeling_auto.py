@@ -579,3 +579,15 @@ class AutoModelTest(unittest.TestCase):
         # More precisely, it directly inherits from GenerationMixin. This check would fail prior to v4.45 (inheritance
         # patching was added in v4.45)
         self.assertTrue("GenerationMixin" in str(model.__class__.__bases__))
+
+
+class AutoModelForMultimodalTextToText(unittest.TestCase):
+    def test_voxtral_conditional_generation(self):
+        """Test that VoxtralForConditionalGeneration is properly registered"""
+        from transformers import AutoModelForMultimodalTextToText
+        from transformers.models.voxtral.configuration_voxtral import VoxtralConfig
+        
+        # Check that VoxtralConfig maps to VoxtralForConditionalGeneration  
+        config = VoxtralConfig()
+        model_class = AutoModelForMultimodalTextToText._model_mapping[config.__class__]
+        self.assertEqual(model_class.__name__, "VoxtralForConditionalGeneration")
