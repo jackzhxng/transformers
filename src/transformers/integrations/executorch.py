@@ -522,8 +522,8 @@ class TorchExportableModuleWithStaticCache(torch.nn.Module):
         # Initialize the static cache
         self.model = model
         self.static_cache = StaticCache(max_cache_len=max_cache_len, config=config)
-        head_dim = getattr(config, "head_dim", config.hidden_size // config.num_attention_heads)
-        num_heads = getattr(config, "num_key_value_heads", config.num_attention_heads)
+        head_dim = getattr(config, "head_dim", None) or config.hidden_size // config.num_attention_heads
+        num_heads = getattr(config, "num_key_value_heads", None) or config.num_attention_heads
         dtype = self.model.dtype
         # We need this call to initialize all the layers (otherwise it's done lazily, which is not exportable)
         self.static_cache.early_initialization(batch_size, num_heads, head_dim, dtype, device)
@@ -688,8 +688,8 @@ class TorchExportableModuleWithHybridCache(torch.nn.Module):
 
         # Initialize the cache
         self.cache = StaticCache(config=config, max_cache_len=max_cache_len)
-        head_dim = getattr(config, "head_dim", config.hidden_size // config.num_attention_heads)
-        num_heads = getattr(config, "num_key_value_heads", config.num_attention_heads)
+        head_dim = getattr(config, "head_dim", None) or config.hidden_size // config.num_attention_heads
+        num_heads = getattr(config, "num_key_value_heads", None) or config.num_attention_heads
         dtype = self.model.dtype
         # We need this call to initialize all the layers (otherwise it's done lazily, which is not exportable)
         self.cache.early_initialization(batch_size, num_heads, head_dim, dtype, device)
@@ -833,8 +833,8 @@ class Seq2SeqLMDecoderExportableModuleWithStaticCache(torch.nn.Module):
 
         # Initialize static cache for decoder and DynamicCache for encoder
         self.static_cache = StaticCache(config=self.config, max_cache_len=max_static_cache_length)
-        head_dim = getattr(self.config, "head_dim", self.config.hidden_size // self.config.num_attention_heads)
-        num_heads = getattr(self.config, "num_key_value_heads", self.config.num_attention_heads)
+        head_dim = getattr(self.config, "head_dim", None) or self.config.hidden_size // self.config.num_attention_heads
+        num_heads = getattr(self.config, "num_key_value_heads", None) or self.config.num_attention_heads
         self.static_cache.early_initialization(batch_size, num_heads, head_dim, torch.float32, model_device)
         self.cache = EncoderDecoderCache(self.static_cache, DynamicCache(config=self.config))
 
